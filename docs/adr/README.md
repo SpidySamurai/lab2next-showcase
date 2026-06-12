@@ -38,7 +38,7 @@ Constraint that keeps it testable: the range resolver stays a pure filter pipeli
 
 ## ADR-007 · PBAC (Plan-Based Access Control)
 
-Authorization is a 3-tier chain: Plan → Claims → Quotas, with CASL as policy engine. A single composed `APP_GUARD` runs the ordered stages: public bypass, JWT decode, super-admin bypass, subscription/trial/email gate, CASL policy check. The JWT carries `plan` and `permissions[]`, so authorization needs zero DB hits per request. Claims are raw strings validated against code-defined registries: no permission tables in the database.
+Authorization is a 3-tier chain: Plan → Claims → Quotas, with CASL as policy engine. A single composed `APP_GUARD` runs the ordered stages: public-route check, JWT decode, subscription/trial/email gate for tenant users, CASL policy check. Platform-scope roles are not tenants, so tenant gating does not apply to them; their claims go through the same policy evaluation. The JWT carries `plan` and `permissions[]`, so authorization needs zero DB hits per request. Claims are raw strings validated against code-defined registries: no permission tables in the database.
 
 This ADR also encodes a hard-won lesson: an earlier standalone subscription guard silently no-opped because it ran before the JWT guard populated `request.user`. Any check depending on the authenticated user must run after JWT decoding inside the same guard.
 
