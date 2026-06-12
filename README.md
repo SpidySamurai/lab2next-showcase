@@ -1,46 +1,39 @@
 # Lab2Next
 
-Multi-tenant LIS/LIMS for clinical laboratories, built for México and LATAM. Live at **[lab2next.com](https://lab2next.com)**, app at **[app.lab2next.com](https://app.lab2next.com)**.
-
-> The codebase is private. This repo is the showcase: the product, the architecture and the engineering decisions behind it.
+A multi-tenant LIS for clinical laboratories, built solo from Figma to production. Live at [**lab2next.com**](https://lab2next.com) · App: [app.lab2next.com](https://app.lab2next.com) · 🎬 [Demo reel](.github/readme/app-tour.mp4)
 
 ![cover](.github/readme/cover.png)
 
-![app tour](.github/readme/app-tour.gif)
+> **Showcase repository.** Lab2Next is a production SaaS with a private codebase. This repo documents the product, the architecture, and the engineering decisions behind it: no source code, full engineering story. If you are interviewing me and want to go deeper into any decision, ask me.
 
 ## The idea
 
-Independent clinical labs in México still run on paper and software from the 90s, and not the retro-cool kind. The big LIS vendors charge license fees and implementation projects that a small lab simply cannot pay, so they stay on Excel and WhatsApp. I live in Mérida, I talked with these labs and watched how they actually work. Then I built what should already exist: a lab registers and is operating the same day, with no installation, no technicians and no sales call.
+Independent labs in Mexico still run on paper, WhatsApp chats, and software that looks like 1998. The big LIS vendors sell licenses and months of implementation that a small lab in Mérida can't afford. I live here, I talked to the people running these labs, and I built the thing I felt should exist: a lab signs up, finds a curated catalog already loaded, and takes its first order the same day. No installation, no server in the back room, no IT guy.
 
-The full flow lives in one place: patient registration, orders, sample collection, result capture and validation, PDF report, delivery by QR or WhatsApp, and billing. I designed, built and operate all of it, end to end.
-
-Watch it move: **[app tour, 43s](.github/readme/app-tour.mp4)** · **[registration tutorial, 94s](.github/readme/registration-tutorial.mp4)**
+I built and operate all of it as a single engineer: product, backend, frontend, infra, and billing. In production since May 2026 (public beta Feb to Apr), with 50 registered users and 100+ lab exams processed.
 
 ## What's inside
 
-- **Orders and patients**: capture with catalog autocomplete, digital patient records, order history and states
-- **Exam catalog with a visual builder**: 155+ preloaded exams classified per NOM-007 (the Mexican lab regulation), editable sections, analytes, calculated fields and reference ranges
-- **Result capture with automatic flags**: typed entry (numeric, qualitative, calculated), H/L flagging against the resolved reference ranges
-- **Patient results portal**: passwordless access via signed QR token, shareable by WhatsApp in one click
-- **PDF reports**: per-lab branded result reports, the document that actually sells the lab
-- **Multi-branch with roles**: branch-scoped operation and claims-based permissions per user per branch
-- **Appointments**: calendar with per-branch capacity control
-- **Stripe subscriptions**: trial, quota enforcement, self-serve upgrades and downgrades
-- **Mobile-first**: reception works on phones and tablets at the counter, every screen verified at 375px
+- **The full lab flow**: patient registration, orders, sample collection, result capture and validation, branded PDF reports, patient delivery, billing
+- **A visual exam builder**: labs design their own exams with sections, analytes, calculated fields, and reference ranges
+- **Typed result capture** with automatic H/L flagging against reference ranges
+- **Patient results portal**: passwordless access via signed QR token, shareable by WhatsApp in one click, because most patients here are older people who install nothing
+- **Multi-branch and roles**: branch-scoped operation with granular claims-based permissions per user per branch
+- **Stripe self-serve subscriptions**: trial, quota enforcement, upgrades and downgrades, no sales call required
 
-On the roadmap: CFDI 4.0 invoicing, analyzer interfacing (HL7/ASTM), public API.
+The full feature breakdown lives in [docs/features.md](docs/features.md).
 
-## The exam engine
+## A quick tour
 
-The hardest design problem in the product. Labs need standard exams from a global curated catalog, but every lab customizes names, prices, methods, units and reference ranges. Copying the whole catalog per lab would explode storage and make global updates impossible.
+| Lab dashboard | Exam builder |
+| --- | --- |
+| ![Dashboard](.github/readme/dashboard.png) | ![Builder](.github/readme/exam-builder.png) |
 
-The solution is a 3-tier personalization strategy:
+| Orders | Result capture |
+| --- | --- |
+| ![Orders](.github/readme/order-wizard.png) | ![Result capture](.github/readme/results-capture.png) |
 
-1. **Metadata overrides**: commercial data (name, price, turnaround) lives in per-lab pivot tables. Zero structural duplication.
-2. **Implicit forking**: the exam tree is cloned for a lab only when it mutates structure (adds or removes analytes or sections). Metadata edits never fork.
-3. **Rule shadowing**: lab-scoped reference range rules override global rules without duplicating analytes, resolved by a pure filter pipeline at evaluation time.
-
-## Architecture
+## Architecture at a glance
 
 ```mermaid
 %%{init: {'theme': 'neutral'}}%%
@@ -70,49 +63,36 @@ flowchart LR
 - **PBAC (Plan-Based Access Control)**: a 3-tier chain (Plan, Claims, Quotas) evaluated by a single composed guard, with CASL as the policy engine. Permissions travel in the JWT, so authorization costs zero DB hits per request.
 - **Clean Architecture Light**: thin controllers, business logic exclusively in application services, types-only domain layer. Deliberate pragmatism over ceremony, documented in ADRs.
 - **Feature-first frontend**: code organized by domain, hard 500-line component limit, coordinator-only pages, TanStack Query for all server state.
-- **Security**: tenant isolation on every query, signed revocable tokens for public result access, rate limiting on public endpoints, verify-first signup (no account exists until the email is verified).
-- **Data safety**: additive-only migrations, soft deletes, scripted prod backup and dev restore discipline.
 
-Deep dives: **[Architecture](docs/architecture.md)** · **[Architecture Decision Records](docs/adr-summaries.md)** (11 ADRs with rationale, trade-offs and review triggers)
+## Deep dives
 
-## A quick tour
-
-| Operational dashboard | Exam catalog (NOM-007 categories, per-lab pricing) |
-| --- | --- |
-| ![Dashboard](.github/readme/dashboard.png) | ![Catalog](.github/readme/catalog.png) |
-
-| Exam builder | Analyte configuration with reference ranges |
-| --- | --- |
-| ![Exam builder](.github/readme/exam-builder.png) | ![Analyte configuration](.github/readme/analyte-config.png) |
-
-| Order creation wizard | Result capture, automatic high flag |
-| --- | --- |
-| ![Order wizard](.github/readme/order-wizard.png) | ![Result capture](.github/readme/results-capture.png) |
-
-| Landing | Signup to first order in under an hour |
-| --- | --- |
-| ![Landing](.github/readme/landing-hero.png) | ![Onboarding](.github/readme/landing-onboarding.png) |
-
-| Product modules | The whole system on mobile |
-| --- | --- |
-| ![Modules](.github/readme/landing-modules.png) | ![Mobile](.github/readme/mobile.png) |
-
-## Traction
-
-In production since May 2026, after a public beta that ran from February to April 2026. So far: 50 registered users, 100+ exams processed, and paying labs on the Founder plan. Small numbers, real ones.
-
-## What I'd do differently
-
-Three honest ones:
-
-1. **Enforce component decomposition from day one.** My frontend ADR has a hard 500-line limit per component because I broke it first: the order creation modal grew past 1,000 lines before I wrote the rule, and it is still sitting in my technical debt tracker waiting for its refactor. Decomposition rules cost nothing on day one and a full sprint on month six.
-2. **Put the ugliest report in front of real labs sooner.** I have built the PDF report system three times: fixed templates, then per-section configuration, now a block-based designer. Every rewrite was driven by customization needs I would have discovered months earlier by shipping the crudest version to a real lab and watching.
-3. **Extract shared logic into a package before it duplicates.** The billing status classifier and the field validation rules each exist twice, one copy per side, frontend and backend, kept in sync by hand and by a note in my docs. In a pnpm monorepo there is no excuse for that: a shared package was always one afternoon away.
+- [The exam engine](docs/exam-engine.md): the most interesting subsystem. How one global catalog (classified per the Mexican NOM-007-SSA3-2011 regulation) serves every lab's customizations without duplication: metadata overrides, implicit forking, and rule shadowing.
+- [Architecture](docs/architecture.md): the full picture, order lifecycle included.
+- [Architecture Decision Records](docs/adr): 11 ADRs with rationale, trade-offs, and review triggers.
+- [Security](docs/security.md): tenant isolation, signed revocable tokens, rate limiting, verify-first signup, additive-only migrations.
 
 ## Stack
 
-NestJS 11 · Prisma · PostgreSQL · CASL · Stripe · Next.js 16 · React 19 · TypeScript · TanStack Query · Tailwind CSS · shadcn/ui · Playwright · Jest · pnpm monorepo
+| Layer | Stack |
+| --- | --- |
+| Backend | NestJS 11 · Prisma · PostgreSQL · CASL · Stripe |
+| Frontend | Next.js 16 · React 19 · TypeScript · TanStack Query · Tailwind CSS · shadcn/ui |
+| Auth | JWT (header + cookie) · claims-based permissions · signed public-access tokens |
+| Testing & QA | Playwright (E2E flows with video) · Jest |
+| Tooling | pnpm monorepo · ESLint · CI on GitHub |
+
+Mobile-first throughout: reception staff work on tablets and phones at the counter, so every screen ships responsive from the first commit and is verified at 375px. Light and dark themes, both first-class.
+
+## What I'd do differently
+
+Every real project has this list. Mine:
+
+- I would write the Playwright flows earlier; manually QA-ing a multi-role, multi-branch flow stops scaling at the second branch
+- The catalog data pipeline deserved version control from day one
+- I underestimated how much of a SaaS is not code: pricing, onboarding copy, and support flows took real engineering time
 
 ---
 
-Designed, built and operated by [Javier Chi](https://javierchiortiz.dev) in Mérida, México. Also on [LinkedIn](https://www.linkedin.com/in/javier-fernando-chi-ortiz) and [GitHub](https://github.com/SpidySamurai), or by [email](mailto:javierchiortiz@gmail.com). All screenshots show QA/test data.
+Built by [Javier Chi Ortiz](https://javierchiortiz.dev/en) in Mérida, México 🇲🇽 · [LinkedIn](https://www.linkedin.com/in/javier-fernando-chi-ortiz) · [lab2next.com](https://lab2next.com)
+
+All product screenshots show QA/test data. © All rights reserved.
