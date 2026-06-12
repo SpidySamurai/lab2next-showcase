@@ -123,7 +123,7 @@ Payment status tracks in parallel with operational status, so reception can coll
 
 ## Backend layout: Clean Architecture Light
 
-Deliberately pragmatic. Full rules in the [ADR summaries](adr-summaries.md), the short version:
+Deliberately pragmatic. Full rules in the [ADR summaries](adr/README.md), the short version:
 
 - Controllers are thin: parse request, call service, return response.
 - All business logic lives in `application/` services that use Prisma directly (no repository layer: a documented, revisitable decision).
