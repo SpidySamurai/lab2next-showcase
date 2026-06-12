@@ -20,11 +20,20 @@ What the platform does today, in production. Roadmap items are marked as such; n
 | **Multi-branch** | Branch count gated by plan |
 | **Multi-user with roles** | Per-branch roles (reception, technician, admin) with granular claims |
 | **Operational dashboard** | Daily KPIs: orders, pending work, operation status |
+| **Analytics** | Revenue, collections and turnaround times per branch, exportable to Excel |
 | **Billing** | Stripe subscriptions, quota enforcement, self-serve upgrade and downgrade |
 | **Email invitations** | Token-based user invites to the laboratory |
 | **Full auth** | Login, registration, password recovery, email confirmation |
 
-![Exam catalog](../.github/readme/catalog.png)
+## In the app
+
+| Operational dashboard | Exam catalog |
+| --- | --- |
+| ![Dashboard](../.github/readme/dashboard.png) | ![Catalog](../.github/readme/catalog.png) |
+
+| Order creation wizard | Result capture, automatic high flag |
+| --- | --- |
+| ![Order wizard](../.github/readme/order-wizard.png) | ![Result capture](../.github/readme/results-capture.png) |
 
 ## Self-serve onboarding
 
@@ -42,11 +51,11 @@ A lab registers, gets the preloaded catalog, configures branches and roles throu
 
 | Feature | Status |
 | --- | --- |
-| CFDI 4.0 patient invoicing | Not implemented |
-| Exportable reports (Excel) | Partial (order PDF only) |
-| Automatic appointment reminders | Not implemented |
-| Automatic WhatsApp delivery | Not implemented |
-| Sales / cash register cut | Not implemented |
-| Analyzer interfacing (HL7 / ASTM) | Not implemented |
-| Public API | Not implemented |
-| White label | Not implemented |
+| CFDI 4.0 patient invoicing | Planned |
+| Automatic appointment reminders | Planned |
+| Automatic WhatsApp delivery | Planned |
+| Sales / cash register cut | In progress |
+| Persistent quotes | In progress |
+| Analyzer interfacing (HL7 / ASTM) | Planned |
+| Public API | Planned |
+| White label | Planned |
