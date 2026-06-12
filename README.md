@@ -25,13 +25,15 @@ The full feature breakdown lives in [docs/features.md](docs/features.md).
 
 ## A quick tour
 
-| Lab dashboard | Exam builder |
+| Everything in one dashboard | Orders without the paperwork |
 | --- | --- |
-| ![Dashboard](.github/readme/dashboard.png) | ![Builder](.github/readme/exam-builder.png) |
+| ![Dashboard](.github/readme/tour-dashboard.png) | ![Orders](.github/readme/tour-orders.png) |
 
-| Orders | Result capture |
+| Results, validated and delivered | The whole system, on mobile |
 | --- | --- |
-| ![Orders](.github/readme/order-wizard.png) | ![Result capture](.github/readme/results-capture.png) |
+| ![Results](.github/readme/tour-results.png) | ![Mobile](.github/readme/mobile.png) |
+
+More screens, raw and unframed, in [docs/features.md](docs/features.md).
 
 ## Architecture at a glance
 
