@@ -76,7 +76,7 @@ flowchart TB
 ```
 
 - **Multi-tenant by `laboratoryId`**: every query is tenant-scoped, nothing crosses laboratories. Branch context is explicit on top.
-- **PBAC (Plan-Based Access Control)**: a 3-tier chain (Plan, Claims, Quotas) evaluated by a single composed guard, with CASL as the policy engine. Permissions travel in the JWT, so authorization costs zero DB hits per request.
+- **PBAC (Plan-Based Access Control)**: a 3-tier chain (Plan, Claims, Quotas) enforced server-side on every request by a single composed guard, with CASL as the policy engine and `@RequirePermission()` on every protected route. Permissions travel in the JWT, so authorization costs zero DB hits per request. The frontend mirrors the same claims to hide what the API would reject, but the backend is the enforcement point.
 - **Clean Architecture Light**: every module ships the same three layers, `http/` (thin controllers, DTO validation), `application/` (all business logic and transactions), `domain/types/` (pure types). Deliberate pragmatism over ceremony, documented in ADRs.
 - **Feature-first frontend**: code organized by domain, hard 500-line component limit, coordinator-only pages, TanStack Query for all server state.
 

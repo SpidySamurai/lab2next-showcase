@@ -83,7 +83,7 @@ Key properties:
 
 - **Zero DB hits per request**: the JWT carries `plan` and `permissions[]`; policies evaluate against the token, not the database.
 - **One guard, ordered stages**: an earlier iteration registered the subscription check as an independent `APP_GUARD` and it silently no-opped because `request.user` did not exist yet. The fix (and the lesson) became the unified guard: any check that depends on `request.user` must run after JWT decoding inside the same guard chain.
-- **Permission-driven UI**: the frontend renders navigation and actions from the same claims, so users never see dead-end buttons.
+- **Permission-driven UI, backend-enforced**: the frontend renders navigation and actions from the same claims so users never see dead-end buttons, but it is only a mirror. Every protected route is enforced server-side by the guard chain; stripping the UI would change nothing about what the API allows.
 
 ## The exam engine
 
