@@ -39,31 +39,45 @@ More screens, raw and unframed, in [docs/features.md](docs/features.md).
 
 ```mermaid
 %%{init: {'theme': 'neutral'}}%%
-flowchart LR
+flowchart TB
     subgraph Clients
         W[Next.js app<br/>lab staff]
         P[Patient portal<br/>QR token access]
         L[Landing<br/>lab2next.com]
     end
-    subgraph Backend [NestJS API]
-        G[UnifiedAuthGuard<br/>JWT + subscription + claims]
-        S[Application services<br/>business logic]
-        E[Exam engine<br/>ranges + flags + calc fields]
+
+    subgraph API [NestJS API · Clean Architecture Light]
+        subgraph HTTP [HTTP layer]
+            G[UnifiedAuthGuard<br/>JWT + subscription + claims]
+            C[Thin controllers<br/>DTO validation only]
+        end
+        subgraph APP [Application layer]
+            S[Services<br/>all business logic + transactions]
+            E[Exam engine<br/>ranges + flags + calc fields]
+        end
+        subgraph DOM [Domain + data layer]
+            T[Domain types<br/>pure, no logic]
+            PR[Prisma<br/>tenant-scoped queries]
+        end
     end
-    DB[(PostgreSQL<br/>Prisma)]
+
+    DB[(PostgreSQL)]
     ST[Stripe<br/>subscriptions]
     EM[Email<br/>verification + invites]
 
-    W --> G --> S --> DB
+    W --> G
     P --> G
+    G --> C --> S
     S --> E
+    S -.-> T
+    S --> PR --> DB
     S --> ST
     S --> EM
 ```
 
 - **Multi-tenant by `laboratoryId`**: every query is tenant-scoped, nothing crosses laboratories. Branch context is explicit on top.
 - **PBAC (Plan-Based Access Control)**: a 3-tier chain (Plan, Claims, Quotas) evaluated by a single composed guard, with CASL as the policy engine. Permissions travel in the JWT, so authorization costs zero DB hits per request.
-- **Clean Architecture Light**: thin controllers, business logic exclusively in application services, types-only domain layer. Deliberate pragmatism over ceremony, documented in ADRs.
+- **Clean Architecture Light**: every module ships the same three layers, `http/` (thin controllers, DTO validation), `application/` (all business logic and transactions), `domain/types/` (pure types). Deliberate pragmatism over ceremony, documented in ADRs.
 - **Feature-first frontend**: code organized by domain, hard 500-line component limit, coordinator-only pages, TanStack Query for all server state.
 
 ## Deep dives

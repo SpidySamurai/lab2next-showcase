@@ -13,15 +13,24 @@ flowchart TB
         LAND[Landing<br/>lab2next.com]
     end
 
-    subgraph API [NestJS 11 API]
-        GUARD[UnifiedAuthGuard<br/>single APP_GUARD]
-        MODS[Feature modules<br/>orders · patients · catalog · billing · reports · permissions]
-        ENGINE[Exam engine<br/>reference range resolver · calculated fields · flagging]
-        PDF[PDF report generator]
+    subgraph API [NestJS 11 API · three layers per module]
+        subgraph HTTPL [http/ layer]
+            GUARD[UnifiedAuthGuard<br/>single APP_GUARD]
+            CTRL[Thin controllers + DTOs<br/>orders · patients · catalog · billing · reports · permissions]
+        end
+        subgraph APPL [application/ layer]
+            SVC[Services<br/>business logic + transactions]
+            ENGINE[Exam engine<br/>range resolver · calculated fields · flagging]
+            PDF[PDF report generator]
+        end
+        subgraph DOML [domain/ + data]
+            TYPES[Domain types<br/>pure, no logic]
+            PRISMA[Prisma<br/>tenant-scoped queries]
+        end
     end
 
     subgraph Data
-        PG[(PostgreSQL<br/>via Prisma)]
+        PG[(PostgreSQL)]
     end
 
     subgraph External
@@ -32,12 +41,13 @@ flowchart TB
 
     APP --> GUARD
     PORTAL --> GUARD
-    GUARD --> MODS
-    MODS --> ENGINE
-    MODS --> PDF
-    MODS --> PG
-    MODS --> STRIPE
-    MODS --> MAIL
+    GUARD --> CTRL --> SVC
+    SVC --> ENGINE
+    SVC --> PDF
+    SVC -.-> TYPES
+    SVC --> PRISMA --> PG
+    SVC --> STRIPE
+    SVC --> MAIL
     APP -.-> WA
 ```
 
@@ -60,14 +70,14 @@ flowchart LR
     P -- yes --> OK[Allow]
     P -- no --> J[Decode JWT<br/>header or cookie]
     J -- invalid --> D401[401]
-    J --> SA{Super admin?}
-    SA -- yes --> OK
-    SA -- no --> SUB[Subscription / trial /<br/>email-verification gate]
+    J --> SUB[Subscription / trial /<br/>email-verification gate<br/>tenant scope]
     SUB -- blocked --> D403a[403]
     SUB --> CASL["CASL policy check<br/>JWT permissions[] vs<br/>@RequirePermission()"]
     CASL -- deny --> D403b[403]
     CASL -- allow --> OK
 ```
+
+Platform-scope roles (the super admin operating the platform itself) are not tenants, so the tenant subscription gate does not apply to them; their access is still resolved by the same policy evaluation, against platform-scope claims that are never assignable from a lab context.
 
 Key properties:
 
