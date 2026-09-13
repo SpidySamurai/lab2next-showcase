@@ -1,6 +1,6 @@
 # Architecture Decision Records (summaries)
 
-These are public summaries of the architecture decisions that shaped Lab2Next. Each one records the decision, the rationale, the trade-offs accepted and a review trigger that defines when to revisit it. The full versions live in the private codebase; what follows is condensed for a public audience.
+These are public summaries of the architecture decisions that shaped Lab2Next. Each one records the decision, the rationale, the trade-offs accepted and a review trigger that defines when to revisit it. What follows is condensed for a public audience.
 
 A recurring theme: **pragmatism over ceremony**. Several ADRs deliberately reject patterns (repositories, rich domain entities, unit-of-work) that would be premature at this scale, but each rejection is written down with the conditions under which it should be reconsidered.
 
