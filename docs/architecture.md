@@ -87,26 +87,7 @@ Key properties:
 
 ## The exam engine
 
-The hardest design problem in the product: one curated global catalog, thousands of per-lab customizations, no duplication explosion.
-
-```mermaid
-%%{init: {'theme': 'neutral'}}%%
-flowchart TB
-    GC[Global catalog<br/>exams · sections · analytes · range rules]
-    M[Tier 1 · Metadata overrides<br/>per-lab pivot tables: name, price, turnaround]
-    F[Tier 2 · Implicit fork<br/>exam tree cloned only on structural mutation]
-    S[Tier 3 · Rule shadowing<br/>lab-scoped range rules override global ones]
-    RES[ReferenceRangeResolver<br/>pure filter pipeline]
-    OUT[Effective exam for one lab]
-
-    GC --> M --> OUT
-    GC --> F --> OUT
-    GC --> S --> RES --> OUT
-```
-
-- Metadata edits never fork. Forking is triggered exclusively by structural mutation, so the common case (rename, reprice) is a single pivot row.
-- Reference range rules support multi-axis conditions (age, sex, physiological phase) and resolve through a pure pipeline; merge logic lives in the engine service, keeping the resolver testable in isolation.
-- Result capture evaluates each value against the resolved ranges and flags H/L automatically; calculated analytes derive from sibling values.
+The hardest design problem in the product: one curated global catalog, thousands of per-lab customizations, no duplication explosion. It resolves each lab's effective exam in three tiers (metadata overrides, implicit forking, rule shadowing), with reference ranges resolved by a pure filter pipeline and H/L flags applied at capture. The diagram and the full design are in [The exam engine](exam-engine.md).
 
 ## Public results access
 
