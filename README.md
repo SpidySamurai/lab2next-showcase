@@ -29,9 +29,9 @@ The full feature breakdown lives in [docs/features.md](docs/features.md).
 
 ## A quick tour
 
-![A short tour of the app: dashboard, orders, patients and samples](.github/readme/app-tour.gif)
+![A short tour of the app: dashboard, orders, results, patients and samples](.github/readme/app-tour.gif)
 
-The same tour in full quality: [app tour video, 43s](.github/readme/app-tour.mp4).
+The same tour in full quality: [app tour video, 29s](.github/readme/app-tour.mp4).
 
 | Everything in one dashboard | Orders without the paperwork |
 | --- | --- |
