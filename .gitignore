@@ -3,3 +3,12 @@
 
 # CodeGraph local index
 .codegraph/
+
+# Local AI agent files (never part of this repository)
+.claude/
+.codex/
+.cursor/
+.github/copilot-instructions.md
+.github/instructions/
+CLAUDE.md
+AGENTS.md
