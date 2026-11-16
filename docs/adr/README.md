@@ -16,11 +16,11 @@ The domain layer contains types and interfaces, not rich domain entities. Busine
 
 ## ADR-003 · Prisma transactions in services
 
-Explicit `prisma.$transaction()` calls in services, no Unit of Work abstraction. Simple and visible at the call site.
+Explicit `prisma.$transaction()` calls in services, no Unit of Work abstraction. Simple and visible at the call site. Revisit if one business operation has to commit across several services in a single transaction, or the same transaction setup repeats across modules.
 
-## ADR-004 · Query-parameter modals (deferred)
+## ADR-004 · Query-parameter modals
 
-Modal state via URL query params instead of a global store. Deferred to post-launch; the current pattern is sufficient.
+Modal state via URL query params instead of a global store. Status: accepted, not adopted yet. It was deferred until after launch, and in production since May 2026 modals still keep their state in the page that opens them; a query param is used only as an entry link that opens a creation modal and is then cleared. Revisit when a modal's state has to survive a reload or be shared as a link.
 
 ## ADR-005 · Public results access tokens
 
@@ -56,4 +56,4 @@ Every module follows `application/` (services, all business logic) + `http/` (co
 
 ## ADR-011 · Permission-driven UI
 
-The frontend derives navigation and available actions from the same claims the backend enforces, so the UI never shows actions the API would reject.
+The frontend derives navigation and available actions from the same claims the backend enforces, so the UI never shows actions the API would reject. The UI is a mirror, never the check (ADR-007). Revisit if the frontend's copy of the claims drifts from the backend registries, for example an action the UI offers and the API rejects; that is the point to generate the frontend's list from the backend registry.
