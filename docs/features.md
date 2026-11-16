@@ -7,7 +7,7 @@ What the platform does today, in production. Roadmap items are marked as such; n
 | Area | What it does |
 | --- | --- |
 | **Self-serve signup** | 14-day trial, no credit card, email verification. The account does not exist until the email is verified. |
-| **Orders** | Capture with catalog autocomplete, order history, states (received / in process / completed) |
+| **Orders** | Capture with catalog autocomplete and order history. Order states: pending, completed (every exam validated), in progress (reopened for a correction) and cancelled. Each exam is tracked as pending, captured or validated. |
 | **Patient records** | Digital clinical history, demographics, previous orders |
 | **Exam catalog** | 155+ preloaded exams classified per NOM-007, lab-editable with a visual builder for formulas and reference ranges |
 | **Exam packages** | Grouped exams with configurable prorated pricing |

@@ -118,16 +118,36 @@ Patients get results without accounts or apps:
 
 ## Order lifecycle and state
 
+An order and each exam in it carry their own state. The order is completed only when every exam in it is validated, and that completion is what releases results: the PDF report and the patient portal show a value only for a validated exam on a completed order.
+
 ```mermaid
 %%{init: {'theme': 'neutral'}}%%
 stateDiagram-v2
+    direction LR
     [*] --> Pending: order created
-    Pending --> InProcess: samples collected
-    InProcess --> Captured: results entered
-    Captured --> Validated: chemist validates
-    Validated --> Delivered: PDF + portal/WhatsApp
-    Delivered --> [*]
+    Pending --> Completed: every exam validated
+    Completed --> InProgress: reopened for a correction
+    InProgress --> Completed: every exam validated again
+    Pending --> Cancelled
+    InProgress --> Cancelled
+    Completed --> Cancelled
+    Cancelled --> [*]
 ```
+
+Each exam moves on its own inside the order:
+
+```mermaid
+%%{init: {'theme': 'neutral'}}%%
+stateDiagram-v2
+    direction LR
+    [*] --> Pending: exam added
+    Pending --> Captured: results entered
+    Captured --> Validated: results validated
+    Validated --> Captured: unlocked for a correction
+```
+
+- A cancelled order is final: it cannot be completed or reopened.
+- Correcting a result of a completed order reopens it, so the patient's report is withheld until the order is completed again. Every capture, validation, unlock and reopen is recorded in the order's history.
 
 Payment status tracks in parallel with operational status, so reception can collect before, during or after processing.
 
