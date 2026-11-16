@@ -29,17 +29,19 @@ The full feature breakdown lives in [docs/features.md](docs/features.md).
 
 ## A quick tour
 
-![A short tour of the app: dashboard, orders, results, patients and samples](.github/readme/app-tour.gif)
+![A short tour of the app in a browser frame: dashboard, orders, results, samples, catalog and analytics](.github/readme/app-tour.gif)
 
 The same tour in full quality: [app tour video, 29s](.github/readme/app-tour.mp4).
 
 | Everything in one dashboard | Orders without the paperwork |
 | --- | --- |
-| ![Dashboard](.github/readme/tour-dashboard.png) | ![Orders](.github/readme/tour-orders.png) |
+| Pending, in progress and completed today, with what needs attention before it runs late. | Every order from intake to delivery, with its status and payment on the same row. |
+| ![The Lab2Next dashboard in a browser: pending, in progress and completed orders for today](.github/readme/tour-dashboard.png) | ![The orders list on a tablet and in a browser, with status and payment per order](.github/readme/tour-orders.png) |
 
 | Results, validated and delivered | The whole system, on mobile |
 | --- | --- |
-| ![Results](.github/readme/tour-results.png) | ![Mobile](.github/readme/mobile.png) |
+| Out-of-range values flagged on capture; the signed result goes out by PDF, QR or WhatsApp. | The lab from a phone, not just the front desk. |
+| ![Validated blood chemistry results with a high glucose value flagged, next to the order on a phone](.github/readme/tour-results.png) | ![Three phones showing the dashboard, the orders list and an order's detail](.github/readme/mobile.png) |
 
 More screens, raw and unframed, in [docs/features.md](docs/features.md).
 
