@@ -1,16 +1,20 @@
 # Lab2Next
 
-A multi-tenant LIS for clinical laboratories, built solo from Figma to production. Live at [**lab2next.com**](https://lab2next.com) · App: [app.lab2next.com](https://app.lab2next.com) · 🎬 [Demo reel](.github/readme/app-tour.mp4)
+A multi-tenant LIS for clinical laboratories, built solo from Figma to production.
 
-![cover](.github/readme/cover.png)
+Live at [**lab2next.com**](https://lab2next.com) · App: [app.lab2next.com](https://app.lab2next.com)
 
-> **Showcase repository.** Lab2Next is a production SaaS with a private codebase. This repo documents the product, the architecture, and the engineering decisions behind it: no source code, full engineering story. If you are interviewing me and want to go deeper into any decision, ask me.
+![Lab2Next on desktop, tablet and mobile](.github/readme/cover.png)
+
+> **Showcase repository.** Lab2Next is a production SaaS with a private codebase. This repo documents the product, the architecture, and the engineering decisions behind it: no source code, full engineering story. If you are interviewing me and want to go deeper into any decision, ask me on [LinkedIn](https://www.linkedin.com/in/javier-fernando-chi-ortiz).
+
+**Status:** in production since May 2026. Figures in this repo are as of November 2026.
 
 ## The idea
 
 Independent labs in Mexico still run on paper, WhatsApp chats, and software that looks like 1998. The big LIS vendors sell licenses and months of implementation that a small lab in Mérida can't afford. I live here, I talked to the people running these labs, and I built the thing I felt should exist: a lab signs up, finds a curated catalog already loaded, and takes its first order the same day. No installation, no server in the back room, no IT guy.
 
-I built and operate all of it as a single engineer: product, backend, frontend, infra, and billing. In production since May 2026 (public beta Feb to Apr), with 50 registered users and 100+ lab exams processed.
+I built and operate all of it as a single engineer: product, backend, frontend, infra, and billing. In production since May 2026 (public beta Feb to Apr), with 2,800+ exams with validated results as of November 2026.
 
 ## What's inside
 
@@ -24,6 +28,10 @@ I built and operate all of it as a single engineer: product, backend, frontend, 
 The full feature breakdown lives in [docs/features.md](docs/features.md).
 
 ## A quick tour
+
+![A short tour of the app: dashboard, orders, patients and samples](.github/readme/app-tour.gif)
+
+The same tour in full quality: [app tour video, 43s](.github/readme/app-tour.mp4).
 
 | Everything in one dashboard | Orders without the paperwork |
 | --- | --- |
@@ -107,8 +115,8 @@ Every real project has this list. Mine:
 - The catalog data pipeline deserved version control from day one
 - I underestimated how much of a SaaS is not code: pricing, onboarding copy, and support flows took real engineering time
 
----
+## Rights
 
-Built by [Javier Chi Ortiz](https://javierchiortiz.dev/en) in Mérida, México 🇲🇽 · [LinkedIn](https://www.linkedin.com/in/javier-fernando-chi-ortiz) · [lab2next.com](https://lab2next.com)
+© 2026 Javier Chi Ortiz. All rights reserved. Lab2Next's source code is private; this repository contains documentation and screenshots only. All product screenshots show QA/test data.
 
-All product screenshots show QA/test data. © All rights reserved.
+Built by [Javier Chi Ortiz](https://javierchiortiz.dev).
